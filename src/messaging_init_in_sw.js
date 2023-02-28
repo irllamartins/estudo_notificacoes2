@@ -1,7 +1,8 @@
 
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
+//informações de config
 const firebaseConfig = {
   apiKey: "AIzaSyDEwnbp_HJUx3Lsox56kB_4QMvioZGiT5o",
   authDomain: "estudo-notificacao.firebaseapp.com",
@@ -11,25 +12,31 @@ const firebaseConfig = {
   appId: "1:613507036757:web:eb31f187df1ff1725746dc"
 };
 
-
+//Acessa o token de registro
 function requestPermission() {
 
   console.log("Requesting permission...");
+  //verificação de permissão
   Notification.requestPermission().then((permission) => {
 
     if (permission === "granted") {
 
       console.log("Notification permission granted.");
       const app = initializeApp(firebaseConfig);
+
+      //registro do token
       const messaging = getMessaging(app);
 
+      //recupera token
       getToken(messaging, {
         vapidKey:
         "BFOCGLD3ay_ujz7cXdx3ka9Wk30wQ9rOyn0Jf93nj_HfyvbL15Dc33A1v-0_o_W730F79o6B-ZdanmxipdXpbxI",
       }).then((currentToken) => {
         
         if (currentToken) {
+          //token
           console.log("currentToken: ", currentToken);
+          
 
         } else {
           console.log("Can not get token");
