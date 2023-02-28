@@ -10,16 +10,11 @@ const firebaseConfig = {
     messagingSenderId: "613507036757",
     appId: "1:613507036757:web:eb31f187df1ff1725746dc"
   };
-;
+
 //inicializa a coneção com firebase
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-/*messaging.onMessage((payload) => {
-  console.log('Message received. ', payload);
-  // ...
-});
-*/
 
 //envia a notificação em segundo plano
 messaging.onBackgroundMessage((payload) => {
