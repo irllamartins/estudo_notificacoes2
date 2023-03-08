@@ -3,7 +3,7 @@ import { Button, Paper } from '@mui/material'
 
 import { useSnackbar } from 'notistack';
 
- export const  MessageButtons= () =>{
+ export const  MessageButtons= (props) =>{
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -42,6 +42,7 @@ import { useSnackbar } from 'notistack';
         { variant: "error", message: "Errro" },
         { variant: "warning", message: "Warning" },
         { variant: "info", message: "Info" },
+        { variant: "default", message: "Info default" },
     ]
     const handleClick = useCallback((button) => () => {
         enqueueSnackbar(button.message, { variant: button.variant });
