@@ -1,12 +1,14 @@
-import React,{useCallback} from "react"
+import React, { useCallback } from "react"
 import { Button, Paper } from '@mui/material'
 
 import { useSnackbar } from 'notistack';
 
- export const  MessageButtons= (props) =>{
+export const MessageButtons = (props) => {
 
+    // usa a notificação em forma de fila
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
+    // personaliação de estilo de botão
     const styles = {
         root: {
             flexGrow: 1,
@@ -37,13 +39,17 @@ import { useSnackbar } from 'notistack';
             color: '#ffa000'
         }
     };
+
+    // tipos de botão
     const buttons = [
-        { variant: "success", message: "Sucessu" },
+        { variant: "success", message: props.frase },
         { variant: "error", message: "Errro" },
         { variant: "warning", message: "Warning" },
         { variant: "info", message: "Info" },
         { variant: "default", message: "Info default" },
     ]
+
+    //memoriza a função e rederiza só quando tiver uma nova nootificação na fila
     const handleClick = useCallback((button) => () => {
         enqueueSnackbar(button.message, { variant: button.variant });
     }, [enqueueSnackbar]);

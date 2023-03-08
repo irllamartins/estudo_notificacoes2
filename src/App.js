@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import './index.css'
@@ -19,6 +19,8 @@ const firebaseConfig = {
 
 function App() {
 
+  const [frase, setFrase] = useState("")
+  
   //Acessa o token de registro 
   function requestPermission() {
 
@@ -44,7 +46,7 @@ function App() {
           if (currentToken) {
             onMessage(messaging, (payload) => {
               console.log('Message received. ', payload);
-              // ...
+              setFrase(payload.notification.body)
             });
 
 
@@ -63,14 +65,14 @@ function App() {
 
   }
 
-    requestPermission();
-  
+  requestPermission();
+
 
   return (
     <div className="App">
       <SnackbarProvider>
-      <h1>teste de notificações</h1>
-        <MessageButtons/>
+        <h1>teste de notificações</h1>
+        <MessageButtons frase={frase} />
       </SnackbarProvider>
     </div>
   );
