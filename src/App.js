@@ -1,7 +1,10 @@
 import React from 'react';
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import './index.css'
 
+import { SnackbarProvider, useSnackbar } from 'notistack';
+import { MessageButtons } from './MessagenButtons';
 
 //informações de config
 const firebaseConfig = {
@@ -65,9 +68,10 @@ function App() {
 
   return (
     <div className="App">
-
+      <SnackbarProvider>
       <h1>teste de notificações</h1>
-
+        <MessageButtons/>
+      </SnackbarProvider>
     </div>
   );
 }
