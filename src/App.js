@@ -18,9 +18,14 @@ const firebaseConfig = {
 
 
 function App() {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const [frase, setFrase] = useState("")
+  const [frase, setFrase] = useState("oi")
   
+  const handleClickDefault=(e)=>{
+    enqueueSnackbar(e)
+   }
+
   //Acessa o token de registro 
   function requestPermission() {
 
@@ -47,9 +52,10 @@ function App() {
             onMessage(messaging, (payload) => {
               console.log('Message received. ', payload);
               setFrase(payload.notification.body)
+               handleClickDefault(frase)
             });
 
-
+          
             //token
             console.log("currentToken: ", currentToken);
 
@@ -67,13 +73,11 @@ function App() {
 
   requestPermission();
 
-
   return (
     <div className="App">
-      <SnackbarProvider>
+      
         <h1>teste de notificações</h1>
-        <MessageButtons frase={frase} />
-      </SnackbarProvider>
+      
     </div>
   );
 }

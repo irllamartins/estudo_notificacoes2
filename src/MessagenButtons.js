@@ -1,10 +1,10 @@
 import React, { useCallback } from "react"
-import { Button, Paper } from '@mui/material'
+import { Button, Paper,TextField } from '@mui/material'
 
 import { useSnackbar } from 'notistack';
 
 export const MessageButtons = (props) => {
-
+ 
     // usa a notificação em forma de fila
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -49,22 +49,29 @@ export const MessageButtons = (props) => {
         { variant: "default", message: "Info default" },
     ]
 
+    const handleClickDefault=(e)=>{
+        enqueueSnackbar(e)
+    }
     //memoriza a função e rederiza só quando tiver uma nova nootificação na fila
     const handleClick = useCallback((button) => () => {
+
+        console.log(button)
         enqueueSnackbar(button.message, { variant: button.variant });
     }, [enqueueSnackbar]);
 
     return (
         <Paper>
-            {buttons.map((button) => (
+            {/*buttons.map((button) => (
                 <Button
                     key={button.variant}
                     variant='outlined'
-                    style={{ ...styles.button, ...styles[button.variant] }}
-                    onClick={handleClick(button)}>
+                    //style={{ ...styles.button, ...styles[button.variant] }}
+                    onChange={ (frase) => handleClick( { variant: "success", message: frase })}>
                     {button.variant}
                 </Button>
-            ))}
+            ))*/}
+            <TextField  onChange={e=>handleClickDefault(props.frase)}/>
+
         </Paper>
     )
 }
