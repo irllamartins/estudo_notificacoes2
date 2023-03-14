@@ -42,11 +42,11 @@ export const MessageButtons = (props) => {
 
     // tipos de botão
     const buttons = [
-        { variant: "success", message: props.frase },
-        { variant: "error", message: "Errro" },
-        { variant: "warning", message: "Warning" },
-        { variant: "info", message: "Info" },
-        { variant: "default", message: "Info default" },
+        { variant: "success", message: props.frase.body },
+        { variant: "error", message: props.frase.body  },
+        { variant: "warning", message: props.frase.body  },
+        { variant: "info", message: props.frase.body  },
+        { variant: "default", message: props.frase.body  },
     ]
 
     const handleClickDefault=(e)=>{
@@ -54,23 +54,22 @@ export const MessageButtons = (props) => {
     }
     //memoriza a função e rederiza só quando tiver uma nova nootificação na fila
     const handleClick = useCallback((button) => () => {
-
-        console.log(button)
         enqueueSnackbar(button.message, { variant: button.variant });
     }, [enqueueSnackbar]);
 
     return (
         <Paper>
-            {/*buttons.map((button) => (
+            {buttons.map((button) => (
                 <Button
                     key={button.variant}
                     variant='outlined'
-                    //style={{ ...styles.button, ...styles[button.variant] }}
-                    onChange={ (frase) => handleClick( { variant: "success", message: frase })}>
+                    style={{ ...styles.button, ...styles[button.variant] }}
+                    onClick={handleClick(button)}
+                    onChange={ handleClickDefault(props.frase)}
+                    >
                     {button.variant}
                 </Button>
-            ))*/}
-            <TextField  onChange={e=>handleClickDefault(props.frase)}/>
+            ))}
 
         </Paper>
     )
