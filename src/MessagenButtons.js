@@ -49,8 +49,8 @@ export const MessageButtons = (props) => {
         { variant: "default", message: props.frase.body  },
     ]
 
-    const handleClickDefault=(e)=>{
-        enqueueSnackbar(e)
+    const handleClickDefault=(e)=>{     
+            enqueueSnackbar(e)
     }
     //memoriza a função e rederiza só quando tiver uma nova nootificação na fila
     const handleClick = useCallback((button) => () => {
@@ -65,7 +65,7 @@ export const MessageButtons = (props) => {
                     variant='outlined'
                     style={{ ...styles.button, ...styles[button.variant] }}
                     onClick={handleClick(button)}
-                    onChange={ handleClickDefault(props.frase)}
+                  //  onChange={ handleClickDefault(props.frase)}
                     >
                     {button.variant}
                 </Button>
