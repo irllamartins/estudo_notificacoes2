@@ -5,6 +5,8 @@ const INITIAL_STATE = {
         body: "corpo da notificação teste"
     
 }
+
+//action->reducers
 const reducersAll = (state = INITIAL_STATE, action) =>{
    console.log("-- state",state,"\n-- action",action.payload)
 
