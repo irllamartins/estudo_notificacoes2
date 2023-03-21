@@ -1,12 +1,16 @@
 import React, { useCallback } from "react"
-import { Button, Paper,TextField } from '@mui/material'
+import { Button, Paper} from '@mui/material'
 
 import { useSnackbar } from 'notistack';
 
-export const MessageButtons = (props) => {
+import { connect } from 'react-redux'
+
+const MessageButtons = (props) => {
  
     // usa a notificação em forma de fila
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar();
+
+    const {body} = props
 
     // personaliação de estilo de botão
     const styles = {
@@ -42,16 +46,14 @@ export const MessageButtons = (props) => {
 
     // tipos de botão
     const buttons = [
-        { variant: "success", message: props.frase.body },
-        { variant: "error", message: props.frase.body  },
-        { variant: "warning", message: props.frase.body  },
-        { variant: "info", message: props.frase.body  },
-        { variant: "default", message: props.frase.body  },
+        { variant: "success", message: body },
+        { variant: "error", message: body  },
+        { variant: "warning", message: body  },
+        { variant: "info", message: body  },
+        { variant: "default", message: body  },
     ]
 
-    const handleClickDefault=(e)=>{     
-            enqueueSnackbar(e)
-    }
+
     //memoriza a função e rederiza só quando tiver uma nova nootificação na fila
     const handleClick = useCallback((button) => () => {
         enqueueSnackbar(button.message, { variant: button.variant });
@@ -65,7 +67,6 @@ export const MessageButtons = (props) => {
                     variant='outlined'
                     style={{ ...styles.button, ...styles[button.variant] }}
                     onClick={handleClick(button)}
-                  //  onChange={ handleClickDefault(props.frase)}
                     >
                     {button.variant}
                 </Button>
@@ -74,3 +75,14 @@ export const MessageButtons = (props) => {
         </Paper>
     )
 }
+//mapeia o estado do valor na store para esse componente
+const mapStateToProps = (state) => {
+    return {
+      body: state.notification.body
+    }   
+  }
+  
+ 
+  //percorre primeiro a função do conect para depois colocar media como parametro
+export default connect(mapStateToProps)(MessageButtons);
+  

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { Paper } from '@mui/material'
 import './index.css'
 
-import { SnackbarProvider, useSnackbar } from 'notistack';
-import { MessageButtons } from './MessagenButtons';
+import { useSnackbar } from 'notistack';
+import MessageButtons from './MessagenButtons';
+import { alterarNotificacao, alterarTituloNotificacao, alterarMensagemNotificacao } from './store/duck/action';
+import { connect } from 'react-redux'
 
 //informações de config
 const firebaseConfig = {
@@ -17,14 +20,25 @@ const firebaseConfig = {
 };
 
 
-function App() {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+function App(props) {
 
-  const [frase, setFrase] = useState({title:"",body:""})
-  
-  const handleClickDefault=(e)=>{
-    enqueueSnackbar(e.body)
-   }
+  const { enqueueSnackbar } = useSnackbar();
+
+  const {
+    messageId,
+    title,
+    body,
+    alterarNotificacaoAgora,
+    alterarTituloNotificacaoAgora,
+    alterarMensagemNotificacaoAgora
+  } = props
+
+  //altera o estado
+  const handleClickDefault = (payload) => {
+    //alterarTituloNotificacaoAgora(payload)
+    //alterarMensagemNotificacaoAgora(payload)
+    alterarNotificacaoAgora(payload)
+  }
 
   //Acessa o token de registro 
   function requestPermission() {
@@ -50,10 +64,13 @@ function App() {
 
           if (currentToken) {
             onMessage(messaging, (payload) => {
-              console.log('Message received. ', payload);
-              setFrase(payload.notification)
-              
-               handleClickDefault(payload.notification)
+              // console.log('Message received. ', payload);
+
+              //atualiza com o redux
+              handleClickDefault(payload)
+
+              //faz aparecer a parte visual da notificao
+              enqueueSnackbar(`${body}`, { variant: 'success' })
             });
 
             //token
@@ -75,13 +92,47 @@ function App() {
 
   return (
     <div className="App">
+
+      <h1>Notificações</h1>
+      <span>Teste para recebimento de notificações</span>
       
-      <h1>teste de notificações</h1>
-      <MessageButtons frase={frase}/> 
-      <p>Titulo: {frase.title}</p>
-      <p>Mensagem: {frase.body}</p>
+      <MessageButtons />
+      <Paper >
+        <p>ID: {messageId}</p>
+        <p>Titulo: {title}</p>
+        <p>Mensagem: {body}</p>
+      </Paper>
     </div>
   );
 }
 
-export default App;
+//mapeia o estado do valor na store para esse componente
+const mapStateToProps = (state) => {
+  return {
+    messageId: state.notification.messageId,
+    title: state.notification.title,
+    body: state.notification.body
+
+  }
+}
+
+//notifica quando ocorre uma alteração nas funções
+const mapDispatchToProp = (dispatch) => {
+  return {
+    alterarNotificacaoAgora(novaNotificacao) {
+      const action = alterarNotificacao(novaNotificacao)
+      dispatch(action)
+    },
+    alterarTituloNotificacaoAgora(novaNotificacao) {
+      const action = alterarTituloNotificacao(novaNotificacao)
+      dispatch(action)
+    },
+    alterarMensagemNotificacaoAgora(novaNotificacao) {
+      const action = alterarMensagemNotificacao(novaNotificacao)
+      dispatch(action)
+    }
+  }
+}
+
+//percorre primeiro a função do conect para depois colocar media como parametro
+export default connect(mapStateToProps, mapDispatchToProp)(App);
