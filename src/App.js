@@ -70,7 +70,7 @@ function App(props) {
               handleClickDefault(payload)
 
               //faz aparecer a parte visual da notificao
-              enqueueSnackbar(`${body}`, { variant: 'success' })
+              enqueueSnackbar(`Modificado e recebido`, { variant: 'success' })
             });
 
             //token
